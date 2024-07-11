@@ -4,6 +4,7 @@ import "./App.css";
 import { connect, sendMsg } from "./api"; // 从api模块导入connect和sendMsg函数
 import Header from './components/Header/Header'; // 导入Header组件
 import ChatHistory from './components/ChatHistory/ChatHistory'; // 导入ChatHistory组件
+import ChatInput from './components/ChatInput/ChatInput'; // 导入ChatHistory组件
 
 // 定义App组件，它是一个React类组件
 class App extends Component {
@@ -29,18 +30,20 @@ class App extends Component {
   }
 
   // 发送消息的方法
-  send() {
-    console.log("hello");
-    sendMsg("hello");
+  send(event) {
+    if(event.keyCode === 13) {
+      sendMsg(event.target.value);
+      event.target.value = "";
+    }
   }
 
   // 渲染方法，用于显示组件
   render() {
     return (
       <div className="App">
-        <Header /> {/* 渲染Header组件 */}
-        <ChatHistory chatHistory={this.state.chatHistory} /> {/* 将chatHistory state作为prop传递给ChatHistory组件 */}
-        <button onClick={() => this.send()}>Hit</button> {/* 按钮点击时触发send方法 */}
+        <Header />
+        <ChatHistory chatHistory={this.state.chatHistory} />
+        <ChatInput send={this.send} />
       </div>
     );
   }
